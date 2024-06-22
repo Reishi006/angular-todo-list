@@ -1,0 +1,55 @@
+.main-todo-wrapper {
+    width: 45%;
+
+
+    border-radius: 2px;
+}
+
+.main-todo {
+    margin: 0;
+    padding: 1.5em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(135, 195, 255);
+}
+
+.main-todo-upper {
+    margin: 1em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-todo-title {
+    margin: .1em;
+
+    font: {
+        size: 20px;
+        weight: bold;
+    }
+}
+
+.main-todo-list {
+    width: 50%;
+}
+
+.todo-element {
+    margin: .3em;
+    padding: .5em;
+
+    border-radius: 5px;
+}
+
+.todo-element:nth-child(odd) {
+    background-color: rgb(65, 156, 247);
+}
+
+.todo-element:nth-child(even) {
+    background-color: rgb(109, 180, 252);
+}

@@ -1,0 +1,16 @@
+<div class="main-todo-wrapper">
+  <main class="main-todo">
+    <article class="main-todo-upper">
+      <div class="main-todo-title">Todo List</div>
+      <div>
+        <input #todoInput type="text">
+        <button (click)="addToList(todoInput.value)">Add</button>
+      </div>
+    </article>
+    <article class="main-todo-list">
+      <div *ngFor="let entry of list" class="todo-element">{{entry}}</div>
+    </article>
+  </main>
+</div>
+
+<router-outlet />

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -12,16 +12,38 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   list:string[] = [];
 
-  addToList(input: string) {
-    console.log(input);
-    this.list.push(input);
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    const localStorage = document.defaultView?.localStorage;
+
+    const storedList = localStorage?.getItem('list');
+    if (storedList) {
+      this.list = JSON.parse(storedList);
+    }
   }
 
-  addToListEnter(e: KeyboardEvent, input: string): void {
+  clearInput(input: HTMLInputElement) {
+    input.value = '';
+  }
+
+  addToList(input: HTMLInputElement) {
+    this.list.push(input.value);
+    localStorage.setItem('list', JSON.stringify(this.list));
+    this.clearInput(input);
+  }
+
+  addToListEnter(e: KeyboardEvent, input: HTMLInputElement) {
     e.preventDefault();
-    
+
     if (e.key === 'Enter') {
-      this.list.push(input);
+      this.list.push(input.value);
+      this.clearInput(input);
+    }
+  }
+
+  removeTodoElement(index: number) {
+    if (index + 1 <= this.list.length) {
+      this.list.splice(index, 1);
+      localStorage.setItem('list', JSON.stringify(this.list));
     }
   }
 }

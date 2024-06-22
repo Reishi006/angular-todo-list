@@ -16,4 +16,12 @@ export class AppComponent {
     console.log(input);
     this.list.push(input);
   }
+
+  addToListEnter(e: KeyboardEvent, input: string): void {
+    e.preventDefault();
+    
+    if (e.key === 'Enter') {
+      this.list.push(input);
+    }
+  }
 }

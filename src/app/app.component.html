@@ -3,14 +3,24 @@
     <article class="main-todo-upper">
       <div class="main-todo-title">Todo List</div>
       <div>
-        <input #todoInput (keyup)="addToListEnter($event, todoInput.value)" type="text">
+        <input ngModel name='inputModel' 
+          #todoInput 
+          (keyup)="addToListEnter($event, todoInput)" 
+          type="text"
+          >
         <button 
-          (click)="addToList(todoInput.value)"
+          (click)="addToList(todoInput)"
           >Add</button>
       </div>
     </article>
     <article class="main-todo-list">
-      <div *ngFor="let entry of list; let i = index" class="todo-element">{{i + 1}}.{{entry}}</div>
+      <div 
+        *ngFor="let entry of list; let i = index" 
+        class="todo-element"
+      >
+        <div>{{i + 1}}.{{entry}}</div>
+        <div (click)="removeTodoElement(i)">x</div>
+      </div>
     </article>
   </main>
 </div>

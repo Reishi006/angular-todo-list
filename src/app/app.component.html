@@ -1,8 +1,9 @@
 <div class="main-todo-wrapper">
+  <nav class="main-todo-navbar">Todo List</nav>
   <main class="main-todo">
     <article class="main-todo-upper">
-      <div class="main-todo-title">Todo List</div>
-      <div>
+      <div class="main-todo-title">Add something:</div>
+      <div class="main-todo-upper-input-wrapper">
         <input ngModel name='inputModel' 
           #todoInput 
           (keyup)="addToListEnter($event, todoInput)" 

@@ -26,6 +26,7 @@ export class AppComponent {
   }
 
   addToList(input: HTMLInputElement) {
+    if (input.value === '' || undefined || null) return;
     this.list.push(input.value);
     localStorage.setItem('list', JSON.stringify(this.list));
     this.clearInput(input);
@@ -34,8 +35,11 @@ export class AppComponent {
   addToListEnter(e: KeyboardEvent, input: HTMLInputElement) {
     e.preventDefault();
 
+    if (input.value === '' || undefined || null) return;
+
     if (e.key === 'Enter') {
       this.list.push(input.value);
+      localStorage.setItem('list', JSON.stringify(this.list));
       this.clearInput(input);
     }
   }

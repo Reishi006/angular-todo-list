@@ -10,7 +10,7 @@ body {
 
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
-    background-color: rgb(181, 218, 255);
+    background-color: rgb(135, 195, 255);
 }
 
 app-root {
@@ -19,22 +19,29 @@ app-root {
 
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 input[type=text] {
     min-width: 300px;
 
-    margin: .2em;
+    margin: 0 .2em;
     padding: .2em;
 
     border: none;
     border: 1px solid cornflowerblue;
     border-radius: 5px;
 
+    outline: none;
+
     font-size: 16px;
 
     background-color: rgb(195, 223, 253);
+
+    &:focus {
+        outline: 2px solid cornflowerblue;
+
+        background-color: rgb(177, 215, 255);
+    }
 }
 
 button {
@@ -47,4 +54,16 @@ button {
     font-size: 16px;
 
     background-color: rgb(109, 180, 252);
+}
+
+
+//ANIMATIONS
+
+@keyframes appearScale {
+    from {
+        transform: scale(1%);
+    }
+    to {
+        transform: scale(100%);
+    }
 }

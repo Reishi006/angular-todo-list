@@ -12,6 +12,8 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   list:string[] = [];
 
+  toggleEditInput = false;
+
   constructor(@Inject(DOCUMENT) private document: Document) {
     const localStorage = document.defaultView?.localStorage;
 
@@ -41,6 +43,31 @@ export class AppComponent {
       this.list.push(input.value);
       localStorage.setItem('list', JSON.stringify(this.list));
       this.clearInput(input);
+    }
+  }
+
+  editTodoElement(index: number) {
+    if (index + 1 <= this.list.length) {
+      this.toggleEditInput = !this.toggleEditInput;
+    }
+  }
+
+  confirmEditTodoElement(e: KeyboardEvent | MouseEvent, index: number, value: string) {
+    e.preventDefault();
+
+    if (index + 1 <= this.list.length) {
+      if (e instanceof KeyboardEvent && e.key === 'Enter') {
+        console.log('keyboard event');
+        this.toggleEditInput = !this.toggleEditInput;
+
+        this.list.splice(index, 1, value);
+        localStorage.setItem('list', JSON.stringify(this.list));
+      } else if (e instanceof MouseEvent) {
+        this.toggleEditInput = !this.toggleEditInput;
+
+        this.list.splice(index, 1, value);
+        localStorage.setItem('list', JSON.stringify(this.list));
+      }
     }
   }
 

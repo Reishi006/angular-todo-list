@@ -16,11 +16,29 @@
     </article>
     <article class="main-todo-list">
       <div 
-        *ngFor="let entry of list; let i = index" 
-        class="todo-element"
-      >
-        <div>{{i + 1}}.{{entry}}</div>
-        <div (click)="removeTodoElement(i)">x</div>
+        *ngIf="list.length === 0"
+        class="no-entries-todo-element"
+      >No entries added (yet)</div>
+      <div *ngIf="list.length > 0">
+        <div 
+          *ngFor="let entry of list; let i = index" 
+          class="todo-element"
+        >
+          <div
+            *ngIf="toggleEditInput === false"
+          >{{i + 1}}.{{entry}}</div>
+          <input 
+            #editInput
+            *ngIf="toggleEditInput === true"
+            (keyup)="confirmEditTodoElement($event, i, editInput.value)"  
+          >
+          <div 
+            (click)="editTodoElement(i)"
+          >edit</div>
+          <div
+            (click)="removeTodoElement(i)"
+          >x</div>
+        </div>
       </div>
     </article>
   </main>

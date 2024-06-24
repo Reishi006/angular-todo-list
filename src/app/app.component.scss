@@ -75,7 +75,9 @@
             cursor: pointer;
         }
     }
+}
 
+.todo-element:last-child {
     animation: 1 .5s appearScale forwards;
 }
 

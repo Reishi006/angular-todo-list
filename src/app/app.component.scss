@@ -67,14 +67,6 @@
     align-items: center;
 
     border-radius: 5px;
-
-    div:nth-child(2) {
-        &:hover {
-            color: rgb(239, 247, 255);
-
-            cursor: pointer;
-        }
-    }
 }
 
 .todo-element:last-child {
@@ -87,4 +79,34 @@
 
 .todo-element:nth-child(even) {
     background-color: rgb(109, 180, 252);
+}
+
+.no-entries-todo-element {
+    text-align: center;
+}
+
+.todo-element-value {
+    width: 80%;
+
+    input[type=text] {
+        width: inherit;
+    }
+
+    cursor: pointer;
+}
+
+.todo-element-edit-x-wrapper {
+    width: 10%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+        &:hover {
+            color: rgb(239, 247, 255);
+
+            cursor: pointer;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Renderer2, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -14,13 +15,19 @@ export class AppComponent {
 
   toggleEditInput = false;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  @ViewChild('todoList') todoList: ElementRef;
+  @ViewChild('elementValue') elementValue: ElementRef;
+  @ViewChild('editInput') editInput: ElementRef;
+  @ViewChild('editButton') editButton: ElementRef;
+
+  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2) {
     const localStorage = document.defaultView?.localStorage;
 
     const storedList = localStorage?.getItem('list');
     if (storedList) {
       this.list = JSON.parse(storedList);
     }
+
   }
 
   clearInput(input: HTMLInputElement) {

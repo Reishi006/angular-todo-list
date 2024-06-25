@@ -19,25 +19,39 @@
         *ngIf="list.length === 0"
         class="no-entries-todo-element"
       >No entries added (yet)</div>
-      <div *ngIf="list.length > 0">
+      <div #todoList *ngIf="list.length > 0">
         <div 
           *ngFor="let entry of list; let i = index" 
           class="todo-element"
         >
-          <div
-            *ngIf="toggleEditInput === false"
-          >{{i + 1}}.{{entry}}</div>
-          <input 
-            #editInput
-            *ngIf="toggleEditInput === true"
-            (keyup)="confirmEditTodoElement($event, i, editInput.value)"  
-          >
           <div 
-            (click)="editTodoElement(i)"
-          >edit</div>
-          <div
-            (click)="removeTodoElement(i)"
-          >x</div>
+            ngModel
+            #elementValue
+            class="todo-element-value"
+            >
+            <div
+              *ngIf="toggleEditInput === false"
+              (click)="editTodoElement(i)"
+            >{{i + 1}}.{{entry}}</div>
+            <input 
+              ngModel
+              #editInput
+              *ngIf="toggleEditInput === true"
+              (keyup)="confirmEditTodoElement($event, i, editInput.value)"
+              value={{entry}}
+              type="text"
+            >
+          </div>
+          <div class="todo-element-edit-x-wrapper">
+            <div 
+              ngModel
+              #editButton
+              (click)="editTodoElement(i)"
+            >edit</div>
+            <div
+              (click)="removeTodoElement(i)"
+            >x</div>
+          </div>
         </div>
       </div>
     </article>

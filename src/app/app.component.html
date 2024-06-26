@@ -29,16 +29,23 @@
             #elementValue
             class="todo-element-value"
             >
+            <input 
+              [checked]="entry.done"
+              ngModel
+              #inputCheck
+              type="checkbox"
+              (click)="setDone(i)"
+            >
             <div
               *ngIf="toggleEditInput === false"
               (click)="editTodoElement(i)"
-            >{{i + 1}}.{{entry}}</div>
+            >{{i + 1}}.{{entry.content}}</div>
             <input 
               ngModel
               #editInput
               *ngIf="toggleEditInput === true"
               (keyup)="confirmEditTodoElement($event, i, editInput.value)"
-              value={{entry}}
+              value={{entry.content}}
               type="text"
             >
           </div>

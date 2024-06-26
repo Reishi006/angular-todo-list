@@ -42,6 +42,10 @@
 
     display: flex;
     justify-content: space-between;
+
+    input[type=text] {
+        margin-right: .2em;
+    }
 }
 
 .main-todo-title {
@@ -58,7 +62,7 @@
 }
 
 .todo-element {
-    margin: .3em;
+    margin: .3em 0;
     padding: .5em;
 
     display: flex;
@@ -87,6 +91,9 @@
 
 .todo-element-value {
     width: 80%;
+    
+    display: flex;
+    flex-direction: row;
 
     input[type=text] {
         width: inherit;

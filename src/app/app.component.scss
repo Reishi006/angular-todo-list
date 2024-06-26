@@ -1,119 +1,105 @@
-.main-todo-wrapper {
-    width: 100%;
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, Inject, Renderer2, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
-    border-radius: 2px;
+
+export class ListElement {
+  constructor (done: boolean, content: string) {
+    this.done = done;
+    this.content = content;
+  }
+
+  done: boolean = false;
+  content: string = '';
 }
 
-.main-todo-navbar {
-    padding: .8em;
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
+})
+export class AppComponent {
+  list:ListElement[] = [];
 
-    font-size: 20px;
+  toggleEditInput = false;
 
-    color: azure;
-    background-color: dodgerblue;
-}
+  @ViewChild('todoList') todoList: ElementRef;
+  @ViewChild('inputCheck') inputCheck: ElementRef;
+  @ViewChild('elementValue') elementValue: ElementRef;
+  @ViewChild('editInput') editInput: ElementRef;
+  @ViewChild('editButton') editButton: ElementRef;
 
-.main-todo {
-    margin: 0;
-    padding: 1.5em;
+  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2) {
+    const localStorage = document.defaultView?.localStorage;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-todo-upper {
-    width: 40%;
-    margin: 1em;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    input[type=text] {
-        width: 100%;
-    }
-}
-
-.main-todo-upper-input-wrapper {
-    width: 100%;
-
-    display: flex;
-    justify-content: space-between;
-
-    input[type=text] {
-        margin-right: .2em;
-    }
-}
-
-.main-todo-title {
-    margin: .1em .1em .5em .1em;
-
-    font: {
-        size: 20px;
-        weight: bold;
-    }
-}
-
-.main-todo-list {
-    width: 40%;
-}
-
-.todo-element {
-    margin: .3em 0;
-    padding: .5em;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    border-radius: 5px;
-}
-
-.todo-element:last-child {
-    animation: 1 .5s appearScale forwards;
-}
-
-.todo-element:nth-child(odd) {
-    background-color: rgb(65, 156, 247);
-}
-
-.todo-element:nth-child(even) {
-    background-color: rgb(109, 180, 252);
-}
-
-.no-entries-todo-element {
-    text-align: center;
-}
-
-.todo-element-value {
-    width: 80%;
-    
-    display: flex;
-    flex-direction: row;
-
-    input[type=text] {
-        width: inherit;
+    const storedList = localStorage?.getItem('list');
+    if (storedList) {
+      this.list = JSON.parse(storedList);
     }
 
-    cursor: pointer;
-}
+  }
 
-.todo-element-edit-x-wrapper {
-    width: 10%;
+  clearInput(input: HTMLInputElement) {
+    input.value = '';
+  }
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  setDone(index: number) {
+    this.list[index].done = !this.list[index].done;
+    localStorage.setItem('list', JSON.stringify(this.list));
+  }
 
-    div {
-        &:hover {
-            color: rgb(239, 247, 255);
+  addToList(input: HTMLInputElement) {
+    if (input.value === '' || undefined || null) return;
+    this.list.push(new ListElement(false, input.value));
+    localStorage.setItem('list', JSON.stringify(this.list));
+    this.clearInput(input);
+  }
 
-            cursor: pointer;
-        }
+  addToListEnter(e: KeyboardEvent, input: HTMLInputElement) {
+    e.preventDefault();
+
+    if (input.value === '' || undefined || null) return;
+
+    if (e.key === 'Enter') {
+      this.list.push(new ListElement(false, input.value));
+      localStorage.setItem('list', JSON.stringify(this.list));
+      this.clearInput(input);
     }
+  }
+
+  editTodoElement(index: number) {
+    if (index + 1 <= this.list.length) {
+      this.toggleEditInput = !this.toggleEditInput;
+
+      console.log(this.list);
+    }
+  }
+
+  confirmEditTodoElement(e: KeyboardEvent | MouseEvent, index: number, value: string) {
+    e.preventDefault();
+
+    if (index + 1 <= this.list.length) {
+      if (e instanceof KeyboardEvent && e.key === 'Enter') {
+        console.log('keyboard event');
+        this.toggleEditInput = !this.toggleEditInput;
+
+        this.list.splice(index, 1, new ListElement(this.list[index].done, value));
+        localStorage.setItem('list', JSON.stringify(this.list));
+      } else if (e instanceof MouseEvent) {
+        this.toggleEditInput = !this.toggleEditInput;
+
+        this.list.splice(index, 1, new ListElement(this.list[index].done, value));
+        localStorage.setItem('list', JSON.stringify(this.list));
+      }
+    }
+  }
+
+  removeTodoElement(index: number) {
+    if (index + 1 <= this.list.length) {
+      this.list.splice(index, 1);
+      localStorage.setItem('list', JSON.stringify(this.list));
+    }
+  }
 }

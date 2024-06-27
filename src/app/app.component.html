@@ -37,13 +37,13 @@
               (click)="setDone(i)"
             >
             <div
-              *ngIf="toggleEditInput === false"
+              *ngIf="entry.edit === false"
               (click)="editTodoElement(i)"
             >{{i + 1}}.{{entry.content}}</div>
             <input 
               ngModel
               #editInput
-              *ngIf="toggleEditInput === true"
+              *ngIf="entry.edit === true"
               (keyup)="confirmEditTodoElement($event, i, editInput.value)"
               value={{entry.content}}
               type="text"

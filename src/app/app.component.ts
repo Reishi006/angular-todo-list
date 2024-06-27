@@ -3,6 +3,18 @@ import { Component, Inject, Renderer2, ElementRef, ViewChild, HostListener } fro
 import { RouterOutlet } from '@angular/router';
 
 
+export class ListElement {
+  constructor (done: boolean, content: string, edit: boolean) {
+    this.done = done;
+    this.content = content;
+    this.edit = edit;
+  }
+
+  done: boolean = false;
+  content: string = '';
+  edit: boolean = false;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -11,11 +23,12 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  list:string[] = [];
+  list:ListElement[] = [];
 
-  toggleEditInput = false;
+  toggleEditInput = false; //later to be deleted (probably)
 
   @ViewChild('todoList') todoList: ElementRef;
+  @ViewChild('inputCheck') inputCheck: ElementRef;
   @ViewChild('elementValue') elementValue: ElementRef;
   @ViewChild('editInput') editInput: ElementRef;
   @ViewChild('editButton') editButton: ElementRef;
@@ -34,9 +47,14 @@ export class AppComponent {
     input.value = '';
   }
 
+  setDone(index: number) {
+    this.list[index].done = !this.list[index].done;
+    localStorage.setItem('list', JSON.stringify(this.list));
+  }
+
   addToList(input: HTMLInputElement) {
     if (input.value === '' || undefined || null) return;
-    this.list.push(input.value);
+    this.list.push(new ListElement(false, input.value, false));
     localStorage.setItem('list', JSON.stringify(this.list));
     this.clearInput(input);
   }
@@ -47,7 +65,7 @@ export class AppComponent {
     if (input.value === '' || undefined || null) return;
 
     if (e.key === 'Enter') {
-      this.list.push(input.value);
+      this.list.push(new ListElement(false, input.value, false));
       localStorage.setItem('list', JSON.stringify(this.list));
       this.clearInput(input);
     }
@@ -56,6 +74,9 @@ export class AppComponent {
   editTodoElement(index: number) {
     if (index + 1 <= this.list.length) {
       this.toggleEditInput = !this.toggleEditInput;
+      this.list[index].edit = !this.list[index].edit;
+
+      //console.log(this.list);
     }
   }
 
@@ -66,13 +87,15 @@ export class AppComponent {
       if (e instanceof KeyboardEvent && e.key === 'Enter') {
         console.log('keyboard event');
         this.toggleEditInput = !this.toggleEditInput;
+        this.list[index].edit = !this.list[index].edit;
 
-        this.list.splice(index, 1, value);
+        this.list.splice(index, 1, new ListElement(this.list[index].done, value, false));
         localStorage.setItem('list', JSON.stringify(this.list));
       } else if (e instanceof MouseEvent) {
         this.toggleEditInput = !this.toggleEditInput;
+        this.list[index].edit = !this.list[index].edit;
 
-        this.list.splice(index, 1, value);
+        this.list.splice(index, 1, new ListElement(this.list[index].done, value, false));
         localStorage.setItem('list', JSON.stringify(this.list));
       }
     }

@@ -25,12 +25,14 @@ export class ListElement {
 export class AppComponent {
   list:ListElement[] = [];
 
+  editInputValue: string;
+
   toggleEditInput = false; //later to be deleted (probably)
 
   @ViewChild('todoList') todoList: ElementRef;
   @ViewChild('inputCheck') inputCheck: ElementRef;
   @ViewChild('elementValue') elementValue: ElementRef;
-  @ViewChild('editInput') editInput: ElementRef;
+  //@ViewChild('editInput') editInput: ElementRef;
   @ViewChild('editButton') editButton: ElementRef;
 
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2) {
@@ -83,9 +85,11 @@ export class AppComponent {
   confirmEditTodoElement(e: KeyboardEvent | MouseEvent, index: number, value: string) {
     e.preventDefault();
 
+    this.editInputValue = value;
+
     if (index + 1 <= this.list.length) {
       if (e instanceof KeyboardEvent && e.key === 'Enter') {
-        console.log('keyboard event');
+        //console.log('keyboard event');
         this.toggleEditInput = !this.toggleEditInput;
         this.list[index].edit = !this.list[index].edit;
 

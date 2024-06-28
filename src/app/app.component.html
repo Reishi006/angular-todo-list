@@ -41,11 +41,11 @@
               (click)="editTodoElement(i)"
             >{{i + 1}}.{{entry.content}}</div>
             <input 
-              ngModel
               #editInput
               *ngIf="entry.edit === true"
               (keyup)="confirmEditTodoElement($event, i, editInput.value)"
               value={{entry.content}}
+              name="edit-value"
               type="text"
             >
           </div>
@@ -53,7 +53,7 @@
             <div 
               ngModel
               #editButton
-              (click)="editTodoElement(i)"
+              (click)="editTodoElement(i); confirmEditTodoElement($event, i, editInputValue)"
             >edit</div>
             <div
               (click)="removeTodoElement(i)"
